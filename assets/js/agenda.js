@@ -31,7 +31,7 @@
         alert("Dato editado");
         operation = "A";
         return true;
-    }	
+    }
 
 	// Borrar contacto
 	function Delete(){
@@ -46,12 +46,14 @@
 	    for(var i in contactos){
 	        var con = JSON.parse(contactos[i]);
 	        $("#contactos-agenda tbody").append("<tr>"+
-	        	"  <td><img src='assets/img/edit.png' alt='Edit"+i+"' class='btnEdit'><img src='assets/img/delete.png' alt='Delete"+i+"' class='btnDelete'></td>" + 
+	        	" <td><img src='assets/img/edit.png' alt='Edit"+i+"' class='btnEdit'><img src='assets/img/delete.png' alt='Delete"+i+"' class='btnDelete'></td>" +
 	            "  <td>"+con.nombre+"</td>" +
 	            "  <td>"+con.telefono+"</td>" +
 	            "  <td>"+con.email+"</td>" +
 	            "</tr>");
 	    }
+			//Make table sortable
+			$("#contactos-agenda tbody").sortable();
 	}
 
 	// Ingresar nuevo contacto
@@ -68,7 +70,7 @@
 	$(".btnEdit").bind("click", function(){
 		operation = "E";
         selected_index = parseInt($(this).attr("alt").replace("Edit", ""));
-               
+
         var cli = JSON.parse(contactos[selected_index]);
         $("#nombre").val(cli.nombre).focus();
         $("#telefono").val(cli.telefono);
