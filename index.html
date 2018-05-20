@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Agenda de contactos - LocalStorage</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/agenda.css">
+</head>
+<body>
+
+	<div class="navbar navbar-default">
+		<div class="navbar-header">
+			<a href="#" class="navbar-brand">Agenda de contactos</a>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-6 col-md-4">
+				<form class="form-signin">
+					<h2 class="form-signin-header">Contactos</h2>
+					<input id="nombre" type="text" autofocus="" required="" placeholder="Nombre" class="form-control">
+					<input id="telefono" type="text" autofocus="" required="" placeholder="Teléfono" class="form-control">
+					<input id="email" type="text" autofocus="" required="" placeholder="Correo electrónico" class="form-control">
+					<button type="submit" class="btn btn-lg btn-primary btn-block">Agregar</button>
+				</form>
+			</div>
+			<div class="col-xs-12 col-md-8">
+				<table id="contactos-agenda" class="table table-striped">
+					<thead>
+	        	<tr>
+	        		<th></th>
+	        		<th>Nombre</th>
+	        		<th>Teléfono</th>
+	        		<th>Correo electrónico</th>
+	        	</tr>
+	        </thead>
+	        <tbody></tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<script src="assets/js/jquery-1.10.2.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/js/agenda.js"></script>
+</body>
+</html>

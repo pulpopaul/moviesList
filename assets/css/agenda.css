@@ -1,0 +1,17 @@
+body {
+  background-color: #eee;
+}
+.form-signin {
+  padding: 15px;
+}
+.form-signin .form-control {
+  -moz-box-sizing: border-box;
+  font-size: 16px;
+  height: auto;
+  margin-bottom: 3px;
+  padding: 10px;
+  position: relative;
+}
+.form-signin .btn {
+  margin-top: 12px;
+}
