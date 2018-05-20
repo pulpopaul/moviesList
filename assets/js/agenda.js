@@ -56,18 +56,29 @@
 			$("#contactos-agenda tbody").sortable();
 	}
 
+	function countItems(){
+		var storedData = contactos;
+		var items = storedData.length;
+
+		$("#counter").find("h2").remove();
+		$("#counter").append(
+			"<h2>You have <span class='badge'>" + items + "</span> movies in your list</h2>"
+		);
+		return items;
+	}
+
 	// Ingresar nuevo contacto
-	$(".form-signin").bind("submit", function(){
+	$(".form-signin").on("submit", function(){
 		if (operation == "A")
 			return Add();
 		else
 			return Edit();
 	});
 
-	List();
 
-	// Botón editar
-	$(".btnEdit").bind("click", function(){
+
+	// Boton editar
+	$("#contactos-agenda").on("click", ".btnEdit", function(){
 		operation = "E";
         selected_index = parseInt($(this).attr("alt").replace("Edit", ""));
 
@@ -78,11 +89,16 @@
 
     });
 
-	// Botón borrar
+	// Boton borrar
 	$("#contactos-agenda").on("click", ".btnDelete", function(){
 	    selected_index = parseInt($(this).attr("alt").replace("Delete", ""));
 	    Delete();
 	    List();
+			countItems();
 	});
+
+	List();
+	countItems();
+
 
 })();
