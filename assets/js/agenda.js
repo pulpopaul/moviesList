@@ -9,10 +9,12 @@
 
 	// Agregar contactos
 	function Add(){
+
 		var contacto = JSON.stringify({
 			nombre: $("#nombre").val(),
 			telefono: $("#telefono").val(),
 			email: $("#email").val()
+		//	file: $(files)
 		});
 		contactos.push(contacto);
 		localStorage.setItem("contactos", JSON.stringify(contactos));
