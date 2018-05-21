@@ -1,25 +1,26 @@
 (function(){
-	// Variables globales
+	// Global variables
 	var operation = "A";
 	var selected_index = -1;
-    var contactos = localStorage.getItem("contactos");
-    contactos = JSON.parse(contactos); //Converts string to object
-    if(contactos == null)
-        contactos = [];
+    var data = localStorage.getItem("data");
+    data = JSON.parse(data); //Converts string to object
+    if(data == null)
+        data = [];
 
-	// Agregar contactos
+	// Add data
 	function Add(){
 
+		//the last image selected is already in local storage.
+		//It was recorded when picked.	We duplicate it.
 		var poster = localStorage.getItem('imageStore');
 
-		var contacto = JSON.stringify({
-			nombre: $("#nombre").val(),
-			telefono: $("#telefono").val(),
+		var newRecord = JSON.stringify({
+			name: $("#name").val(),
+			review: $("#review").val(),
 			poster: poster
-		//	file: $(files)
 		});
-		contactos.push(contacto);
-		localStorage.setItem("contactos", JSON.stringify(contactos));
+		data.push(newRecord);
+		localStorage.setItem("data", JSON.stringify(data));
 
 		//$("#messages").find("p").remove();
 		//$("#messages").append("<p>Data saved</p>");
@@ -27,46 +28,45 @@
 		return true;
 	}
 
-    // Editar contacot
+    // Edit record
     function Edit(){
 			var poster = localStorage.getItem('imageStore');
 
-        contactos[selected_index] = JSON.stringify({
-            nombre: $("#nombre").val(),
-            telefono: $("#telefono").val(),
+        data[selected_index] = JSON.stringify({
+            name: $("#name").val(),
+            review: $("#review").val(),
             poster: poster
         });
-        localStorage.setItem("contactos", JSON.stringify(contactos));
-        alert("Dato editado");
+        localStorage.setItem("data", JSON.stringify(data));
+      //  alert("Record edited successfully");
         operation = "A";
         return true;
     }
 
-	// Borrar contacto
 	function Delete(){
-	    contactos.splice(selected_index, 1);
-	    localStorage.setItem("contactos", JSON.stringify(contactos));
-	    alert("Contacto borrado");
+	    data.splice(selected_index, 1);
+	    localStorage.setItem("data", JSON.stringify(data));
+	    //alert("Record deleted");
 	}
 
-	// Mostrar lista de contactos
+	// Show list of records
 	function List(){
-		$("#contactos-agenda tbody").find("tr").remove();
-	    for(var i in contactos){
-	        var con = JSON.parse(contactos[i]);
-	        $("#contactos-agenda tbody").append("<tr id='" + i + "'>"+
+		$("#list tbody").find("tr").remove();
+	    for(var i in data){
+	        var con = JSON.parse(data[i]);
+	        $("#list tbody").append("<tr id='" + i + "'>"+
 	        	" <td><img src='assets/img/edit.png' alt='Edit"+i+"' class='btnEdit'><img src='assets/img/delete.png' alt='Delete"+i+"' class='btnDelete'></td>" +
-	            "  <td >" +con.nombre+"</td>" +
-	            "  <td>"+con.telefono+"</td>" +
-	            "  <td><img src=" +con.poster+" height='80' width='80' /></td>" +
+	            "  <td >" + con.name + "</td>" +
+	            "  <td>" + con.review + "</td>" +
+	            "  <td><img src=" + con.poster + " height='80' width='80' /></td>" +
 	            "</tr>");
 	    }
-			//Make table sortable
-			$("#contactos-agenda tbody").sortable();
+			//Make table sortable (drag & drop)
+			$("#list tbody").sortable();
 	}
 
 	function countItems(){
-		var storedData = contactos;
+		var storedData = data;
 		var items = storedData.length;
 
 		$("#counter").find("h3").remove();
@@ -76,7 +76,7 @@
 		return items;
 	}
 
-	// Ingresar nuevo contacto
+	// Bind add operation to submit
 	$(".form-signin").on("submit", function(){
 		if (operation == "A")
 			return Add();
@@ -84,20 +84,20 @@
 			return Edit();
 	});
 
-	// Boton editar
-	$("#contactos-agenda").on("click", ".btnEdit", function(){
+	// Bind edit operation to edit button
+	$("#list").on("click", ".btnEdit", function(){
 		operation = "E";
         selected_index = parseInt($(this).attr("alt").replace("Edit", ""));
 				//var poster = localStorage.getItem('imageStore');
-        var cli = JSON.parse(contactos[selected_index]);
-        $("#nombre").val(cli.nombre).focus();
-        $("#telefono").val(cli.telefono);
+        var cli = JSON.parse(data[selected_index]);
+        $("#name").val(cli.name).focus();
+        $("#review").val(cli.review);
         //$("#poster").val(poster);
 
     });
 
-	// Boton borrar
-	$("#contactos-agenda").on("click", ".btnDelete", function(){
+	// Bind delete operation to delete button
+	$("#list").on("click", ".btnDelete", function(){
 	    selected_index = parseInt($(this).attr("alt").replace("Delete", ""));
 	    Delete();
 	    List();
@@ -106,21 +106,23 @@
 
 	//Store new list order when dropping a list item.
 	//https://stackoverflow.com/questions/5320194/get-order-of-list-items-in-a-jquery-sortable-list-after-resort/5320313
-	$("#contactos-agenda tbody").sortable({
+	$("#list tbody").sortable({
 		stop: function(event, ui) {
 			//order is an array. Contains the ids of the rows in the new order.
-			var order = $("#contactos-agenda tbody").sortable("toArray");
+			var order = $("#list tbody").sortable("toArray");
 			//declare a new array and populate with the same elements in the new order.
 			var newData = [];
 			for (var i = 0; i < order.length; i++) {
-					newData[i] = contactos[order[i]];
+					newData[i] = data[order[i]];
 					}
-			//console.log(contactos);
+			//console.log(data);
 			//console.log(newData);
-			localStorage.setItem("contactos", JSON.stringify(newData));
+			localStorage.setItem("data", JSON.stringify(newData));
 	}});
 
-
+	//Store an image previously uploaded.
+	//This function redraws the uploaded img in an invisible canvas.
+	//It's the best way to convert an image in an string to save it.
 	function storeTheImage() {
 	    var imgCanvas = document.getElementById('canvas-element'),
 	        imgContext = imgCanvas.getContext("2d");
@@ -146,6 +148,7 @@
 	    }
 	}
 
+	//Upload image from user's drive and show preview.
 	function readURL(input) {
 	    if (input.files && input.files[0]) {
 	        var reader = new FileReader();
@@ -162,12 +165,7 @@
 	    readURL(this);
 	});
 
-
-
-
-
 	List();
 	countItems();
-
 
 })();
