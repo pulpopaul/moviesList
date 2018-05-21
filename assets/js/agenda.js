@@ -10,24 +10,31 @@
 	// Agregar contactos
 	function Add(){
 
+		var poster = localStorage.getItem('imageStore');
+
 		var contacto = JSON.stringify({
 			nombre: $("#nombre").val(),
 			telefono: $("#telefono").val(),
-			email: $("#email").val()
+			poster: poster
 		//	file: $(files)
 		});
 		contactos.push(contacto);
 		localStorage.setItem("contactos", JSON.stringify(contactos));
-		alert("Datos guardados");
+
+		//$("#messages").find("p").remove();
+		//$("#messages").append("<p>Data saved</p>");
+		//alert("Datos guardados");
 		return true;
 	}
 
     // Editar contacot
     function Edit(){
+			var poster = localStorage.getItem('imageStore');
+
         contactos[selected_index] = JSON.stringify({
             nombre: $("#nombre").val(),
             telefono: $("#telefono").val(),
-            email: $("#email").val()
+            poster: poster
         });
         localStorage.setItem("contactos", JSON.stringify(contactos));
         alert("Dato editado");
@@ -51,7 +58,7 @@
 	        	" <td><img src='assets/img/edit.png' alt='Edit"+i+"' class='btnEdit'><img src='assets/img/delete.png' alt='Delete"+i+"' class='btnDelete'></td>" +
 	            "  <td >" +con.nombre+"</td>" +
 	            "  <td>"+con.telefono+"</td>" +
-	            "  <td>"+con.email+"</td>" +
+	            "  <td><img src=" +con.poster+" height='80' width='80' /></td>" +
 	            "</tr>");
 	    }
 			//Make table sortable
@@ -64,7 +71,7 @@
 
 		$("#counter").find("h2").remove();
 		$("#counter").append(
-			"<h2>You have <span class='badge'>" + items + "</span> movies in your list</h2>"
+			"<h3>You have " + items + " movies in your list</h3>"
 		);
 		return items;
 	}
@@ -81,11 +88,11 @@
 	$("#contactos-agenda").on("click", ".btnEdit", function(){
 		operation = "E";
         selected_index = parseInt($(this).attr("alt").replace("Edit", ""));
-
+				//var poster = localStorage.getItem('imageStore');
         var cli = JSON.parse(contactos[selected_index]);
         $("#nombre").val(cli.nombre).focus();
         $("#telefono").val(cli.telefono);
-        $("#email").val(cli.email);
+        //$("#poster").val(poster);
 
     });
 
