@@ -45,9 +45,9 @@
 		$("#contactos-agenda tbody").find("tr").remove();
 	    for(var i in contactos){
 	        var con = JSON.parse(contactos[i]);
-	        $("#contactos-agenda tbody").append("<tr>"+
+	        $("#contactos-agenda tbody").append("<tr id='" + i + "'>"+
 	        	" <td><img src='assets/img/edit.png' alt='Edit"+i+"' class='btnEdit'><img src='assets/img/delete.png' alt='Delete"+i+"' class='btnDelete'></td>" +
-	            "  <td>"+con.nombre+"</td>" +
+	            "  <td >" +con.nombre+"</td>" +
 	            "  <td>"+con.telefono+"</td>" +
 	            "  <td>"+con.email+"</td>" +
 	            "</tr>");
@@ -75,8 +75,6 @@
 			return Edit();
 	});
 
-
-
 	// Boton editar
 	$("#contactos-agenda").on("click", ".btnEdit", function(){
 		operation = "E";
@@ -96,6 +94,22 @@
 	    List();
 			countItems();
 	});
+
+	//Store new list order when dropping a list item.
+	//https://stackoverflow.com/questions/5320194/get-order-of-list-items-in-a-jquery-sortable-list-after-resort/5320313
+	$("#contactos-agenda tbody").sortable({
+		stop: function(event, ui) {
+			//order is an array. Contains the ids of the rows in the new order.
+			var order = $("#contactos-agenda tbody").sortable("toArray");
+			//declare a new array and populate with the same elements in the new order.
+			var newData = [];
+			for (var i = 0; i < order.length; i++) {
+					newData[i] = contactos[order[i]];
+					}
+			//console.log(contactos);
+			//console.log(newData);
+			localStorage.setItem("contactos", JSON.stringify(newData));
+	}});
 
 	List();
 	countItems();
