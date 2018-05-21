@@ -21,10 +21,11 @@
 		});
 		data.push(newRecord);
 		localStorage.setItem("data", JSON.stringify(data));
-
-		//$("#messages").find("p").remove();
-		//$("#messages").append("<p>Data saved</p>");
-		//alert("Datos guardados");
+		//notify
+		$("#message").find("h4").remove();
+		$("#message").append(
+			"<h4>Record added</h4>"
+		);
 		return true;
 	}
 
@@ -38,7 +39,11 @@
             poster: poster
         });
         localStorage.setItem("data", JSON.stringify(data));
-      //  alert("Record edited successfully");
+				//notify
+				$("#message").find("h4").remove();
+				$("#message").append(
+					"<h4>Record edited successfully</h4>"
+				);
         operation = "A";
         return true;
     }
@@ -46,7 +51,10 @@
 	function Delete(){
 	    data.splice(selected_index, 1);
 	    localStorage.setItem("data", JSON.stringify(data));
-	    //alert("Record deleted");
+			$("#message").find("h4").remove();
+			$("#message").append(
+				"<h4>Record deleted</h4>"
+			);
 	}
 
 	// Show list of records
